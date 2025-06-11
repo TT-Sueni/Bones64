@@ -1,9 +1,18 @@
 
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
+   [field:SerializeField] public Rigidbody Rb{ get; private set; }
+    [field: SerializeField] public float moveSpeed  { get; private set; } = 10f;
+   [field:SerializeField] public Transform CameraTransform { get; private set; }
+
+    private FiniteStateMachine fsm = new FiniteStateMachine();
+
+    /*
     [Header("Movement")]
     public float moveSpeed;
 
@@ -34,17 +43,21 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+    float maxRampAngle = 20f;
+    */
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-
-        readyToJump = true;
+        fsm.Initialize(this);
+        //rb = GetComponent<Rigidbody>();
+        //rb.freezeRotation = true;
+        //
+        //readyToJump = true;
     }
 
     private void Update()
     {
-        // ground check
+        fsm.OnUpdate();
+       /*
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
 
         MyInput();
@@ -54,9 +67,9 @@ public class PlayerMovement : MonoBehaviour
         if (grounded)
             rb.drag = groundDrag;
         else
-            rb.drag = 0;
+            rb.drag = 0;*/
     }
-
+/*
     private void FixedUpdate()
     {
         MovePlayer();
@@ -77,21 +90,6 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
-
-    private void MovePlayer()
-    {
-        // calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        // on ground
-        if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-
-        // in air
-        else if (!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-    }
-
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
@@ -103,6 +101,49 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
+    private void MovePlayer()
+    {
+         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;        
+        if (CanMove(moveDirection)) 
+        {
+            if (grounded)
+            {
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            }
+            else if (!grounded)
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
+    }
+
+    private bool CanMove(Vector3 moveDirection)
+    {
+        Terrain terrain = Terrain.activeTerrain;
+        Vector3 relativePos = GetMapPos();
+        Vector3 normal = terrain.terrainData.GetInterpolatedNormal(relativePos.x, relativePos.z);
+        float angle = (Vector3.Angle(normal, Vector3.up));
+        Debug.Log("Angulo : " + angle);
+
+        float currentHeight = terrain.SampleHeight(rb.position);
+        float nextHeight = terrain.SampleHeight(rb.position + moveDirection * 5 );//ver
+
+
+        if (angle > maxRampAngle && nextHeight > currentHeight)
+            return false;
+            
+            return true;
+
+        
+    }
+    Vector3 GetMapPos()
+    { 
+        Vector3 pos= rb.position;
+        Terrain terrain = Terrain.activeTerrain;  
+        
+        return new Vector3((pos.x - terrain.transform.position.x) / terrain.terrainData.size.x, 0 , 
+            (pos.z - terrain.transform.position.z) / terrain.terrainData.size.z);
+    }
+
+  
 
     private void Jump()
     {
@@ -114,5 +155,5 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
-    }
+    }*/
 }
