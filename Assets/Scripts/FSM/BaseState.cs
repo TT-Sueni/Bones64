@@ -13,15 +13,15 @@ public abstract class BaseState
    
     public virtual void OnEnter()
     {
-        Debug.Log("Entro a " + playerState);
+       // Debug.Log("Entro a " + playerState);
     }
     public virtual void OnUpdate()
     { 
-        Debug.Log("Estoy en " + playerState); 
+       // Debug.Log("Estoy en " + playerState); 
     }
     public virtual void OnExit()
     {
-        Debug.Log("salgo de " + playerState);
+        //Debug.Log("salgo de " + playerState);
     }
 
 }

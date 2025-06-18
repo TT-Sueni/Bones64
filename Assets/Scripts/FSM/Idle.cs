@@ -20,14 +20,24 @@ public class Idle : BaseState
             {
                 fsm.ChangeState(PlayerState.Run);
             }
+            
             else
             {
                 fsm.ChangeState(PlayerState.Walk);
             }
         }
+        /* else if (Input.GetKeyDown(KeyCode.R))
+         {
+             fsm.ChangeState(PlayerState.Swap);
+        }/* 
+         else if (Input.GetKeyDown(KeyCode.Space))
+         {
+             fsm.ChangeState(PlayerState.Jump);
+         }*/
 
-       
+
+
     }
- 
+
 
 }

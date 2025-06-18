@@ -16,6 +16,8 @@ public class FiniteStateMachine
         states.Add(new Idle(this));
         states.Add(new Walk(this));
         states.Add(new Run(this));
+        states.Add(new Jump(this));
+        //states.Add(new SwapController(this));
 
         ChangeState(PlayerState.Idle);
     }

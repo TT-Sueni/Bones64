@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 public class Walk : BaseState
 {
-    public Walk(FiniteStateMachine fsm) : base(fsm) 
+    public Walk(FiniteStateMachine fsm) : base(fsm)
     {
         playerState = PlayerState.Walk;
     }
-   
+
     public override void OnUpdate()
     {
         base.OnUpdate();
@@ -41,13 +41,19 @@ public class Walk : BaseState
             {
                 fsm.ChangeState(PlayerState.Idle);
             }
-            
+
         }
+       /*
+         else if (Input.GetKeyDown(KeyCode.Space))
+         {
+             fsm.ChangeState(PlayerState.Jump);
+         }*/
     }
-    private bool CanMove(Vector3 moveDir) 
+    private bool CanMove(Vector3 moveDir)
     {
         return true;
     }
+
 
 
 }

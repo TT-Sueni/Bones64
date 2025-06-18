@@ -3,6 +3,8 @@ public enum PlayerState
 {
     Idle,
     Walk,
-    Run
+    Run,
+    Jump,
+    Swap
 
 }
