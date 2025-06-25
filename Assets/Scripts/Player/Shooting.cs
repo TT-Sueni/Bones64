@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
-    
 
+    [SerializeField] private GameObject Maggy;
     [SerializeField] public Camera fpsCam;
     [SerializeField] public Transform attackPoint;
     public float shootForce;
 
     void Update()
     {
+        if (Maggy.layer == 8 )
         Shoot();
     }
     private void Shoot()

@@ -13,11 +13,11 @@ public class Walk : BaseState
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 camForward = fsm.PlayerMovement.CameraTransform.forward;
+        Vector3 camForward = fsm.PlayerMovement.MainCam.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = fsm.PlayerMovement.CameraTransform.right;
+        Vector3 camRight = fsm.PlayerMovement.MainCam.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
 

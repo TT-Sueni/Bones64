@@ -60,7 +60,7 @@ public class Magnet : MonoBehaviour
                     if (closesttarget == Vector3.Distance(c.transform.position, player.transform.position))
                     {
                         closesttargetPosition = c.transform.position;
-                        player.transform.position = Vector3.MoveTowards(player.transform.position, closesttargetPosition, 2f * Time.deltaTime);
+                        player.transform.position = Vector3.MoveTowards(player.transform.position, closesttargetPosition, 10f * Time.deltaTime);
                         //closesttargetPosition;
                     }
                 }
@@ -91,7 +91,7 @@ public class Magnet : MonoBehaviour
 
         if (CheckLayerInMask(groundMask, collision.gameObject.layer))
         {
-            Debug.Log("toco suelo");
+            Debug.Log(groundMask.value);
             magnetRB.velocity = Vector3.zero;
             magnetRB.angularVelocity = Vector3.zero;
             isGrounded = true;      

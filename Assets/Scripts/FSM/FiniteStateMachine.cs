@@ -26,7 +26,10 @@ public class FiniteStateMachine
 
     public void OnUpdate()
     {
-        currentStates.OnUpdate();
+
+        if (PlayerMovement.Rb.gameObject.layer == 8)
+            currentStates.OnUpdate();
+        
     }
     public void ChangeState(PlayerState playerState)
     {

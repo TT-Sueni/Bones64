@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Cinemachine;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SwapController : MonoBehaviour
 {
     
-    public Transform CameraTransform1;
+    //public Transform CameraTransform1;
     //SWAP
     [SerializeField] float swapRange = 2000;
-
     [SerializeField] LayerMask controllableLayer;
     List<float> objectsinRange = new List<float>();
     float currentobjectDistance;
@@ -17,23 +17,24 @@ public class SwapController : MonoBehaviour
 
     [SerializeField] GameObject controller;
     GameObject targetofSwap;
-    PlayerMovement playerMovement; 
+    public PlayerMovement playerMovement;
+    [SerializeField] private CinemachineFreeLook CinemachineFreeLook;
+    public bool swapenabled = true; 
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Collider[] collider = Physics.OverlapSphere(transform.position, swapRange, controllableLayer);
+            Collider[] collider = Physics.OverlapSphere(controller.transform.position, swapRange, controllableLayer);
 
-
+            
             foreach (Collider c in collider)
             {
-                if (c.gameObject.layer == 7)
-                {
-                    currentobjectDistance = Vector3.Distance(c.transform.position, transform.position);
+                
+                    currentobjectDistance = Vector3.Distance(c.transform.position, controller.transform.position);
 
                     objectsinRange.Add(currentobjectDistance);
-                }
+                
 
 
             }
@@ -41,36 +42,39 @@ public class SwapController : MonoBehaviour
             
             foreach (Collider c in collider)
             {
-                if (closestTarget == Vector3.Distance(c.transform.position, transform.position))
+                if (closestTarget == Vector3.Distance(c.transform.position, controller.transform.position))
                 {
                     
                     targetofSwap = c.gameObject;
+                    
                     targetofSwap.AddComponent<PlayerMovement>();
                     Rigidbody newrb = targetofSwap.gameObject.GetComponent<Rigidbody>();
-                    playerMovement.Swap(newrb);
+                    
+                    CinemachineFreeLook.LookAt = targetofSwap.transform;
+                    CinemachineFreeLook.Follow = targetofSwap.transform;
+                    controller.layer = 7;
+                    
+                    controller = targetofSwap;
                     //newrb.collisionDetectionMode = playerMovement.Rb.collisionDetectionMode;
                     //newrb.constraints = playerMovement.Rb.constraints;
 
-                    
-                    
-                   
-                    //SaveControllerData(targetofSwap);
+                    swapenabled = true;
 
-
-
-                    //targetofSwap. = CameraTransform1;
-                    //targetofSwap.gameObject.layer = 8;
-                    //controller = targetofSwap;
-
+                    if (swapenabled)
+                    {
+                        playerMovement.Swap(newrb);
+                        swapenabled = false;
+                       
+  
+                    }
                 }
-
             }
             objectsinRange.Clear();
         }
 
     }
 
-
+   
 
 
 

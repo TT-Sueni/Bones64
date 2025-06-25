@@ -1,12 +1,9 @@
 
 
 using Cinemachine;
-using System;
-using System.Collections.Generic;
-
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -14,18 +11,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public Rigidbody Rb;
 
     [field: SerializeField] public float moveSpeed { get; private set; } = 10f;
-    [field: SerializeField] public Transform CameraTransform { get; private set; }
+    [field: SerializeField] public Camera MainCam { get; private set; }
 
-    public float jumpForce;
-    private FiniteStateMachine fsm = new FiniteStateMachine();
     
+    public float jumpForce = 5;
+    private FiniteStateMachine fsm = new FiniteStateMachine();
 
     bool readyToJump;
     public float jumpCooldown;
     bool grounded;
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    public float playerHeight = 1.6f;
+    private int whatIsGround = 64;
+    Shooting shooting;
 
+    
 
 
 
@@ -67,19 +66,17 @@ public class PlayerMovement : MonoBehaviour
         Rb = GetComponent<Rigidbody>();
         readyToJump = true;
         fsm.Initialize(this);
-        //Rb = GetComponent<Rigidbody>();
-        //rb.freezeRotation = true;
-        //
-        //readyToJump = true;
-
-
+        if (MainCam == null)
+            MainCam = Camera.main;
         
+
 
     }
   
 
     private void Update()
     {
+        
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
         
         
@@ -98,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
         
          
         fsm.OnUpdate();
+     
         /*
          grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
 
@@ -109,12 +107,25 @@ public class PlayerMovement : MonoBehaviour
              rb.drag = groundDrag;
          else
              rb.drag = 0;*/
+
+
     }
     private void ResetJump()
     {
+
         readyToJump = true;
     }
-
+    public void Swap(Rigidbody newRB)
+    {
+        Rb.gameObject.layer = 7;
+        
+        Destroy(Rb.GetComponent<PlayerMovement>());
+        newRB.AddComponent<PlayerMovement>();
+        Rb = newRB;
+        Rb.gameObject.layer = 8;
+        
+       
+    }
 
     /*
         private void MyInput()
@@ -198,11 +209,7 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = true;
         }*/
-    public void Swap(Rigidbody newRB)
-    {
-        
-        Rb = newRB;
-    }
+
 
 
 }
