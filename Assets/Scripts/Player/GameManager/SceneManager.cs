@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -73,5 +73,5 @@ public class SceneManager : MonoBehaviourSingleton<SceneManager>
     {
         onLoadedScene?.Invoke();
     }
-}
+}*/
 

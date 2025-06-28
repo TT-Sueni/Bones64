@@ -1,6 +1,5 @@
 
-using System.Drawing;
-using Unity.Android.Types;
+
 using UnityEngine;
 
 public class ColoPlatformBehavior : MonoBehaviour
@@ -49,10 +48,19 @@ public class ColoPlatformBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.layer + " y " + collision.gameObject.GetComponent<Renderer>().material);
-        Debug.Log(" material plataforma" + platform.GetComponent<Renderer>().material);
+        Renderer rendererCollision = collision.gameObject.GetComponent<Renderer>();
+        Renderer rendererPlat = platform.gameObject.GetComponent<Renderer>();
+        if (rendererCollision == null || rendererPlat == null)
+        {
+            Debug.Log("Nulo");
+            
+            return; 
+        }
+           
 
-        if ( collision.gameObject.GetComponent<Renderer>().material.color != platform.GetComponent<Renderer>().material.color)
+       
+
+        if (rendererCollision.material.color != rendererPlat.material.color)
         {
             Debug.Log("entro");
             platcollider.excludeLayers = playerMask;

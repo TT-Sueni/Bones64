@@ -28,7 +28,7 @@ public class Brushy : MonoBehaviour
         brushy.GetComponent<Renderer>().material = materials[color];
 
         colorCounter++;
-        Debug.Log(colorCounter);
+        //Debug.Log(colorCounter);
 
         if (colorCounter == materials.Length) 
             colorCounter = 0;

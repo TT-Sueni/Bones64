@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
+
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -48,13 +49,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         main.previousState.position = player.transform.position;
         main.previousState.rotation = player.transform.rotation;
 
-        SceneManager.onLoadedScene += CustomSceneManager_onLoadedScene;
-        SceneManager.Instance.ChangeSceneTo(newSceneName);
+        //SceneManager.onLoadedScene += CustomSceneManager_onLoadedScene;
+        //SceneManager.Instance.ChangeSceneTo(newSceneName);
     }
 
     private void CustomSceneManager_onLoadedScene()
     {
-        SceneManager.onLoadedScene -= CustomSceneManager_onLoadedScene;
+        //SceneManager.onLoadedScene -= CustomSceneManager_onLoadedScene;
         SetAsActiveScene(sceneToLoad);
     }
 
@@ -66,15 +67,15 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         SetAsActiveScene(sceneToLoad);
         main.SetActiveGo(true);
 
-        Scene gameplay = EditorSceneManager.GetSceneByName(mainGameplayScene);
-        EditorSceneManager.SetActiveScene(gameplay);
-        EditorSceneManager.UnloadSceneAsync(sceneToLoad);
+        //Scene gameplay =  UnityEngine.SceneManagement.GetSceneByName(mainGameplayScene);
+        //EditorSceneManager.SetActiveScene(gameplay);
+        //EditorSceneManager.UnloadSceneAsync(sceneToLoad);
     }
 
     private void SetAsActiveScene(string sceneName)
     {
-        Scene newScene = EditorSceneManager.GetSceneByName(sceneName);
-        EditorSceneManager.SetActiveScene(newScene);
+       // Scene newScene = EditorSceneManager.GetSceneByName(sceneName);
+       // EditorSceneManager.SetActiveScene(newScene);
 
         main.SetActiveGo(false);
     }
